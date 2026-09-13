@@ -4,26 +4,15 @@ import os
 from sqlalchemy import URL
 
 #connexion a la Bd 
-# Récupération sécurisée des variables d'environnement
-user = os.getenv("DB_USER", "postgres")
-password = os.getenv("DB_PASSWORD", "")
-host = os.getenv("DB_HOST", "")
-port = 5432
-db_name = os.getenv("DB_NAME", "postgres")
+user = os.getenv("DB_USER")
+password = os.getenv("DB_PASSWORD")
+host = os.getenv("DB_HOST")
+port = "5432"
+db_name = os.getenv("DB_NAME")
 
-
-
-# Construction propre de l'URL SQLAlchemy
-connection_url = URL.create(
-    drivername="postgresql+psycopg2",
-    username=user,
-    password=password,
-    host=host,
-    port=port,
-    database=db_name,
-)
-
-engine = create_engine(connection_url)
+# Construction dynamique de l'URL
+DATABASE_URL = f"postgresql://{user}:{password}@{host}:{port}/{db_name}"
+engine = create_engine(DATABASE_URL)
 
 
 
