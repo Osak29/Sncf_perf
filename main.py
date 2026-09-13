@@ -1,7 +1,19 @@
 import pandas as pd
 from sqlalchemy import create_engine
+import os
 
-engine = create_engine('postgresql://postgres:29Juin2006@localhost:5432/SNCF')
+#connexion a la db 
+user = os.getenv("DB_USER")
+password = os.getenv("DB_PASSWORD")
+host = os.getenv("DB_HOST")
+port = os.getenv("DB_PORT", "5432")
+db_name = os.getenv("DB_NAME")
+
+# Construction dynamique de l'URL
+DATABASE_URL = f"postgresql://{user}:{password}@{host}:{port}/{db_name}"
+engine = create_engine(DATABASE_URL)
+
+
 
 df = pd.read_csv("regularite-mensuelle-tgv-aqst.csv", sep=";")
 
