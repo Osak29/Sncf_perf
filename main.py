@@ -8,14 +8,10 @@ from sqlalchemy import URL
 user = os.getenv("DB_USER", "postgres")
 password = os.getenv("DB_PASSWORD", "")
 host = os.getenv("DB_HOST", "")
-port = int(os.getenv(5432))
+port = 5432
 db_name = os.getenv("DB_NAME", "postgres")
 
-# Nettoyage si jamais un "https://" traîne encore
-if host.startswith("https://"):
-    host = host.replace("https://", "")
-if host.startswith("http://"):
-    host = host.replace("http://", "")
+
 
 # Construction propre de l'URL SQLAlchemy
 connection_url = URL.create(
