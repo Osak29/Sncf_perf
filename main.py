@@ -40,7 +40,7 @@ Gare = Gared.union(Garea)
 
 #Insertion des noms des gares dans la table dim_gares
 Gare = pd.DataFrame(Gare, columns=["nom_gare"])
-#Gare.to_sql("dim_gares", engine, if_exists="append", index=False)
+Gare.to_sql("dim_gares", engine, if_exists="append", index=False)
 Gareid = pd.read_sql('SELECT * FROM dim_gares', engine)
 
 #Insertion des liaisons 
@@ -76,7 +76,7 @@ liaisons = liaisons.rename(columns={
     "Durée moyenne du trajet" : "duree_moyenne_trajet",
     "Service" : "service"
 })
-#liaisons.to_sql("dim_liaisons", engine, if_exists="append", index=False)
+liaisons.to_sql("dim_liaisons", engine, if_exists="append", index=False)
 liaisonsId = pd.read_sql('Select * From dim_liaisons', engine)
 
 #Insertion de la cause des retards 
