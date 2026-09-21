@@ -4,14 +4,17 @@ import os
 from sqlalchemy import URL
 
 #connexion a la Bd 
-user = os.getenv("DB_USER")
-password = os.getenv("DB_PASSWORD")
-host = os.getenv("DB_HOST")
-port = "5432"
-db_name = os.getenv("DB_NAME")
+raw_port = os.getenv("DB_PORT")
+port = int(raw_port) if raw_port and raw_port.strip() else 5432
 
-# Construction dynamique de l'URL
+user = os.getenv("DB_USER", "postgres")
+password = os.getenv("DB_PASSWORD", "")
+host = os.getenv("DB_HOST", "").replace("https://", "").replace("http://", "").strip()
+db_name = os.getenv("DB_NAME", "postgres")
+
+# Construction de l'URL
 DATABASE_URL = f"postgresql://{user}:{password}@{host}:{port}/{db_name}"
+
 engine = create_engine(DATABASE_URL)
 
 
