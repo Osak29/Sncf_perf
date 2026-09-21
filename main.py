@@ -3,14 +3,28 @@ from sqlalchemy import create_engine
 import os
 from sqlalchemy import URL
 
-#connexion a la Bd 
-raw_port = os.getenv("DB_PORT")
-port = int(raw_port) if raw_port and raw_port.strip() else 5432
 
+
+#connexion a la Bd 
 user = os.getenv("DB_USER", "postgres")
 password = os.getenv("DB_PASSWORD", "")
 host = os.getenv("DB_HOST", "").replace("https://", "").replace("http://", "").strip()
 db_name = os.getenv("DB_NAME", "postgres")
+
+raw_port = os.getenv("DB_PORT", "").strip()
+port = int(raw_port) if raw_port else 5432
+
+# VÉRIFICATION DE SÉCURITÉ : Empêcher le basculement vers le socket local
+if not host:
+    raise ValueError(
+        "CRITICAL ERROR: DB_HOST est vide ! "
+        "Vérifie tes GitHub Secrets ou ton fichier .env local."
+    )
+
+# Construction de l'URL
+DATABASE_URL = f"postgresql://{user}:{password}@{host}:{port}/{db_name}"
+
+engine = create_engine(DATABASE_URL)
 
 # Construction de l'URL
 DATABASE_URL = f"postgresql://{user}:{password}@{host}:{port}/{db_name}"
